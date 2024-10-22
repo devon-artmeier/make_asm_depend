@@ -13,7 +13,7 @@ Tool that makes dependency files from Assembly files for use in Makefiles.
 
 ## Usage
 
-    make-asm-dependencies -o [output] [object file] <-i [search path]> <-r> [input file]
+    make_asm_depend -o [output] [object file] <-i [search path]> <-r> [input file]
     
         -o [output] [object file] - Output file and object file
         <-i [search path>         - Add search path
