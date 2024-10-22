@@ -140,7 +140,7 @@ int main(int argc, char* argv[])
 	std::unordered_set<std::string> files_found;
 
 	if (argc < 2) {
-		std::cout << "Usage: make-asm-dependencies -o [output] [object file] <-i [search path]> <-r> [input file]" << std::endl << std::endl <<
+		std::cout << "Usage: make_asm_depend -o [output] [object file] <-i [search path]> <-r> [input file]" << std::endl << std::endl <<
 		             "    -o [output] [object file] - Output file and object file" << std::endl <<
 		             "    <-i [search path>         - Add search path" << std::endl <<
 		             "    <-r>                      - Use relative path finding" << std::endl <<
