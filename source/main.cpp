@@ -35,7 +35,7 @@ static void AnalyzeFile(std::string input_file, std::ofstream& output, const std
 		throw std::runtime_error(("Multiple inclusions of \"" + GetRelativePath(input_file) + "\" found.").c_str());
 	}
 	files_found.insert(input_file);
-	output << GetRelativePath(input_file) << " ";
+	output << " " << GetRelativePath(input_file);
 
 	std::string line;
 	while (std::getline(input, line)) {
