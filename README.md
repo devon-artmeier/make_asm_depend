@@ -4,6 +4,13 @@
 
 Tool that makes dependency files from Assembly files for use in Makefiles.
 
+## Detects
+
+* include
+* incbin (Psy-Q, vasm)
+* binclude (AS Macro Assembler)
+* incdir (vasm)
+
 ## Usage
 
     make-asm-dependencies -o [output] [object file] <-i [search path]> <-r> [input file]
