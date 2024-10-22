@@ -1,6 +1,6 @@
 # Assembly Dependency Maker
 
-[![Build Status](https://github.com/devon-artmeier/make-asm-dependencies/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/devon-artmeier/make-asm-dependencies/actions/workflows/cmake-multi-platform.yml)
+[![Build Status](https://github.com/devon-artmeier/make_asm_depend/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/devon-artmeier/make_asm_depend/actions/workflows/cmake-multi-platform.yml)
 
 Tool that makes dependency files from Assembly files for use in Makefiles.
 
