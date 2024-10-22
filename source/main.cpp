@@ -43,7 +43,7 @@ static void AnalyzeFile(std::string input_file, std::ofstream& output, const std
 
 		std::vector<std::string> split;
 		size_t line_start = line.find_first_not_of(' ');
-		size_t start       = 0;
+		size_t start      = 0;
 		size_t end        = line.find_first_of(';');
 
 		if (line_start != std::string::npos) {
