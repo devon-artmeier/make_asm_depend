@@ -103,6 +103,8 @@ static void AnalyzeFile(std::string input_file, std::ofstream& output, const std
 						std::string found_file = "";
 						if (std::filesystem::exists(parent_path + "/" + file)) {
 							found_file = parent_path + "/" + file;
+						} else if (std::filesystem::exists(std::filesystem::current_path().string() + "/" + file)) {
+							found_file = std::filesystem::current_path().string() + "/" + file;
 						} else {
 							for (const std::string& search_path : search_paths) {
 								if (std::filesystem::exists(search_path + "/" + file)) {
