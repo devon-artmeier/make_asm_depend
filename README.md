@@ -2,7 +2,7 @@
 
 [![Build Status](https://github.com/devon-artmeier/make_asm_depend/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/devon-artmeier/make_asm_depend/actions/workflows/cmake-multi-platform.yml)
 
-Tool that makes dependency files from Assembly files for use in Makefiles.
+This is a tool that makes dependency files from Assembly files for use in Makefiles.
 
 ## Detects
 
