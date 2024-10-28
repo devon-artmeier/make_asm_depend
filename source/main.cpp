@@ -31,95 +31,94 @@ static void AnalyzeFile(std::string input_file, std::ofstream& output, const std
 		throw std::runtime_error(("Cannot open \"" + GetRelativePath(input_file) + "\" for reading.").c_str());
 	}
 
-	if (files_found.find(input_file) != files_found.end()) {
-		throw std::runtime_error(("Multiple inclusions of \"" + GetRelativePath(input_file) + "\" found.").c_str());
-	}
 	files_found.insert(input_file);
-	output << " " << GetRelativePath(input_file);
+	if (files_found.find(input_file) == files_found.end()) {
+		output << " " << GetRelativePath(input_file);
 
-	std::string line;
-	while (std::getline(input, line)) {
-		std::replace(line.begin(), line.end(), '\t', ' ');
+		std::string line;
+		while (std::getline(input, line)) {
+			std::replace(line.begin(), line.end(), '\t', ' ');
 
-		std::vector<std::string> split;
-		size_t line_start = line.find_first_not_of(' ');
-		size_t start      = 0;
-		size_t end        = line.find_first_of(';');
+			std::vector<std::string> split;
+			size_t line_start = line.find_first_not_of(' ');
+			size_t start      = 0;
+			size_t end        = line.find_first_of(';');
 
-		if (line_start != std::string::npos) {
-			line = line.substr(line_start, end - line_start);
+			if (line_start != std::string::npos) {
+				line = line.substr(line_start, end - line_start);
 
-			while ((end = line.find(' ', start)) != std::string::npos) {
-				std::string token = line.substr(start, end - start);
-				if (start == 0) {
-					// Check label
-					size_t colon = token.find_first_of(':');
-					if (colon != std::string::npos) {
-						// Presence of colon means this is a label
-						while (colon < token.length()) {
-							if (token[colon] != ':') {
-								break;
+				while ((end = line.find(' ', start)) != std::string::npos) {
+					std::string token = line.substr(start, end - start);
+					if (start == 0) {
+						// Check label
+						size_t colon = token.find_first_of(':');
+						if (colon != std::string::npos) {
+							// Presence of colon means this is a label
+							while (colon < token.length()) {
+								if (token[colon] != ':') {
+									break;
+								}
+								colon++;
 							}
-							colon++;
-						}
 
-						if ((token.length() - colon) > 0) {
-							// Label must actually exist
-							token = token.substr(colon, token.length() - colon);
+							if ((token.length() - colon) > 0) {
+								// Label must actually exist
+								token = token.substr(colon, token.length() - colon);
+								split.push_back(token);
+							}
+						} else if (line_start > 0) {
+							// Not label
 							split.push_back(token);
 						}
-					} else if (line_start > 0) {
-						// Not label
+					} else {
 						split.push_back(token);
 					}
-				} else {
-					split.push_back(token);
+					start = end + 1;
 				}
-				start = end + 1;
-			}
-			if (start < line.length()) {
-				split.push_back(line.substr(start));
-			}
+				if (start < line.length()) {
+					split.push_back(line.substr(start));
+				}
 
-			if (split.size() >= 2) {
-				std::string directive = StringToLower(split[0]);
-				std::string file      = split[1];
+				if (split.size() >= 2) {
+					std::string directive = StringToLower(split[0]);
+					std::string file      = split[1];
 
-				if (CheckValidDirective(directive)) {
-					if (file.length() > 2) {
-						// Detect quotation marks
-						char start_quote = file[0];
-						char end_quote   = file[file.length() - 1];
-						if (start_quote == end_quote) {
-							if (start_quote == '\'' || start_quote == '"') {
-								file = file.substr(1, file.length() - 2);
-							}
-						}
-					}
-
-					if (directive.compare("incdir") == 0) {
-						AddSearchPath(file, parent_path, search_paths);
-					} else {
-						std::string found_file = "";
-						if (std::filesystem::exists(parent_path + "/" + file)) {
-							found_file = parent_path + "/" + file;
-						} else if (std::filesystem::exists(std::filesystem::current_path().string() + "/" + file)) {
-							found_file = std::filesystem::current_path().string() + "/" + file;
-						} else {
-							for (const std::string& search_path : search_paths) {
-								if (std::filesystem::exists(search_path + "/" + file)) {
-									found_file = search_path + "/" + file;
-									break;
+					if (CheckValidDirective(directive)) {
+						if (file.length() > 2) {
+							// Detect quotation marks
+							char start_quote = file[0];
+							char end_quote   = file[file.length() - 1];
+							if (start_quote == end_quote) {
+								if (start_quote == '\'' || start_quote == '"') {
+									file = file.substr(1, file.length() - 2);
 								}
 							}
 						}
-						found_file = ResolvePath(found_file);
 
-						if (!found_file.empty()) {
-							if (directive.compare("include") == 0) {
-								AnalyzeFile(found_file, output, parent_path, dependencies, search_paths, files_found);
-							} else if (directive.compare("incbin") == 0 || directive.compare("binclude") == 0) {
-								output << " " << GetRelativePath(found_file);
+						if (directive.compare("incdir") == 0) {
+							AddSearchPath(file, parent_path, search_paths);
+						} else {
+							std::string found_file = "";
+							if (std::filesystem::exists(parent_path + "/" + file)) {
+								found_file = parent_path + "/" + file;
+							} else if (std::filesystem::exists(std::filesystem::current_path().string() + "/" + file)) {
+								found_file = std::filesystem::current_path().string() + "/" + file;
+							} else {
+								for (const std::string& search_path : search_paths) {
+									if (std::filesystem::exists(search_path + "/" + file)) {
+										found_file = search_path + "/" + file;
+										break;
+									}
+								}
+							}
+							found_file = ResolvePath(found_file);
+
+							if (!found_file.empty()) {
+								if (directive.compare("include") == 0) {
+									AnalyzeFile(found_file, output, parent_path, dependencies, search_paths, files_found);
+								} else if (directive.compare("incbin") == 0 || directive.compare("binclude") == 0) {
+									output << " " << GetRelativePath(found_file);
+								}
 							}
 						}
 					}
