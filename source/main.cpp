@@ -31,9 +31,9 @@ static void AnalyzeFile(std::string input_file, std::ofstream& output, const std
 		throw std::runtime_error(("Cannot open \"" + GetRelativePath(input_file) + "\" for reading.").c_str());
 	}
 
-	files_found.insert(input_file);
 	if (files_found.find(input_file) == files_found.end()) {
 		output << " " << GetRelativePath(input_file);
+		files_found.insert(input_file);
 
 		std::string line;
 		while (std::getline(input, line)) {
