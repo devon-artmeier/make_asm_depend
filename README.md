@@ -1,6 +1,6 @@
 # Assembly Dependency Maker
 
-[![Build Status](https://github.com/devon-artmeier/make_asm_depend/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/devon-artmeier/make_asm_depend/actions/workflows/cmake-multi-platform.yml)
+[![Build Status](https://github.com/devon-artmeier/mkasmdep/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/devon-artmeier/mkasmdep/actions/workflows/cmake-multi-platform.yml)
 
 This is a tool that makes dependency files from Assembly files for use in Makefiles.
 
@@ -13,7 +13,7 @@ This is a tool that makes dependency files from Assembly files for use in Makefi
 
 ## Usage
 
-    make_asm_depend -o [output] [object file] <-i [search path]> <-r> [input file]
+    mkasmdep -o [output] [object file] <-i [search path]> <-r> [input file]
     
         -o [output] [object file] - Output file and object file
         <-i [search path>         - Add search path
