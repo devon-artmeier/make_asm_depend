@@ -6,3 +6,5 @@ add_executable(mkasmdep
 	"src/helpers.cpp")
 
 set_property(TARGET mkasmdep PROPERTY CXX_STANDARD 17)
+
+install(TARGETS mkasmdep)
