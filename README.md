@@ -19,3 +19,10 @@ This is a tool that makes dependency files from Assembly files for use in Makefi
         <-i [search path>         - Add search path
         <-r>                      - Use relative path finding
         [input file]              - Input file
+
+## Build Instructions
+
+CMake is required to build this.
+
+* On Windows, you can run "make.bat" and the built executable will be put in the "out/bin" folder.
+* On other systems, you can call "make" and then "make install".
